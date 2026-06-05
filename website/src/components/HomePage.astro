@@ -33,10 +33,10 @@ const content = {
       title: "支持你正在使用的设备",
       body: "Rolume 跟随 macOS 当前输出；显示器可用时通过 DDC/CI 控制。",
       outputs: [
-        ["外接显示器", "支持 DDC/CI 时可直接控制显示器扬声器。", "/device-icons/display.svg"],
-        ["MacBook", "跟随当前系统输出，内置扬声器也能顺手调。", "/device-icons/macbook.svg"],
-        ["耳机 / AirPods", "切到耳机后，滚动手感保持一致。", "/device-icons/airpods.svg"],
-        ["AirPlay", "作为当前声音输出时，同样用 Rolume 调节。", "/device-icons/airplay.svg"],
+        ["外接显示器", "支持 DDC/CI 时可直接控制显示器扬声器。", "/device-icons/display.svg", "DDC/CI"],
+        ["MacBook", "跟随当前系统输出，内置扬声器也能顺手调。", "/device-icons/macbook.svg", "系统输出"],
+        ["耳机 / AirPods", "切到耳机后，滚动手感保持一致。", "/device-icons/airpods.svg", "当前输出"],
+        ["AirPlay", "作为当前声音输出时，同样用 Rolume 调节。", "/device-icons/airplay.svg", "AirPlay"],
       ],
     },
     settings: {
@@ -50,9 +50,8 @@ const content = {
       mouseAlt: "Rolume 鼠标设置窗口，显示步进幅度、滚动调节音量和滚轮反转选项。",
       points: [
         ["显示器音量", "独立滑块和设备名称"],
-        ["滚动手感", "区域、步进和修饰键"],
-        ["设备分开", "鼠标与触控板独立设置"],
-        ["鼠标滚轮反转", "只反转鼠标，不影响触控板；可排除特定 App。"],
+        ["鼠标 / 触控板分开", "区域、步进和修饰键互不影响"],
+        ["鼠标滚轮单独反转", "不影响触控板；可排除特定 App。"],
       ],
     },
     osd: {
@@ -89,10 +88,10 @@ const content = {
       title: "Works with the device you are using",
       body: "Rolume follows the current macOS output. External displays can be controlled through DDC/CI when available.",
       outputs: [
-        ["External display", "Control display speakers directly when DDC/CI is available.", "/device-icons/display.svg"],
-        ["MacBook", "Works with the built-in speakers when they are the current output.", "/device-icons/macbook.svg"],
-        ["Headphones / AirPods", "Keep the same scrolling feel after switching to headphones.", "/device-icons/airpods.svg"],
-        ["AirPlay", "When AirPlay is the active output, Rolume follows it too.", "/device-icons/airplay.svg"],
+        ["External display", "Control display speakers directly when DDC/CI is available.", "/device-icons/display.svg", "DDC/CI"],
+        ["MacBook", "Works with the built-in speakers when they are the current output.", "/device-icons/macbook.svg", "System output"],
+        ["Headphones / AirPods", "Keep the same scrolling feel after switching to headphones.", "/device-icons/airpods.svg", "Current output"],
+        ["AirPlay", "When AirPlay is the active output, Rolume follows it too.", "/device-icons/airplay.svg", "AirPlay"],
       ],
     },
     settings: {
@@ -106,9 +105,8 @@ const content = {
       mouseAlt: "Rolume Mouse settings window showing step size, scroll-to-volume options, and mouse wheel reversal.",
       points: [
         ["Display volume", "Separate slider and device name"],
-        ["Scroll feel", "Areas, steps, and modifier keys"],
-        ["Separate devices", "Mouse and trackpad stay independent"],
-        ["Mouse wheel reversal", "Reverse only the mouse; exclude specific apps."],
+        ["Mouse / trackpad split", "Areas, steps, and modifier keys stay independent"],
+        ["Mouse-only reversal", "Reverse only the mouse; exclude specific apps."],
       ],
     },
     osd: {
@@ -129,10 +127,11 @@ const content = {
 const copy = content[locale];
 ---
 
-<section class="overflow-hidden border-b border-[color:var(--line)]">
-  <div class="mx-auto grid min-h-[78svh] max-w-6xl items-center gap-10 px-5 py-16 lg:grid-cols-[0.92fr_1.08fr]">
-    <div class="min-w-0 max-w-2xl">
-      <p class="mb-5 inline-flex rounded-[8px] border border-[color:var(--line)] bg-white px-3 py-1 text-sm font-medium text-[color:var(--muted)]">
+<section class="hero-scene overflow-hidden border-b border-[color:var(--line)]" data-hero-scene>
+  <div class="hero-cursor-light" aria-hidden="true"></div>
+  <div class="hero-desktop mx-auto grid min-h-[78svh] max-w-6xl items-center gap-10 px-5 py-16 lg:grid-cols-[0.9fr_1.1fr]">
+    <div class="hero-copy min-w-0 max-w-2xl">
+      <p class="hero-badge mb-5 inline-flex rounded-[8px] border border-[color:var(--line)] bg-white/70 px-3 py-1 text-sm font-medium text-[color:var(--muted)]">
         {copy.badge}
       </p>
       <h1 class="max-w-4xl text-5xl font-semibold leading-[0.98] tracking-normal text-[color:var(--ink)] sm:text-7xl">
@@ -146,13 +145,13 @@ const copy = content[locale];
       </p>
       <div class="mt-8 flex flex-col gap-3 sm:flex-row">
         <a
-          class="inline-flex min-h-12 items-center justify-center rounded-[8px] bg-[color:var(--ink)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-black"
+          class="primary-button inline-flex min-h-12 items-center justify-center rounded-[8px] bg-[color:var(--ink)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-black"
           href={SITE.downloadUrl}
         >
           {copy.primaryCta}
         </a>
         <a
-          class="inline-flex min-h-12 items-center justify-center rounded-[8px] border border-[color:var(--line)] bg-white px-5 py-3 text-sm font-semibold text-[color:var(--ink)] transition hover:bg-[color:var(--surface-muted)]"
+          class="secondary-button inline-flex min-h-12 items-center justify-center rounded-[8px] border border-[color:var(--line)] bg-white/78 px-5 py-3 text-sm font-semibold text-[color:var(--ink)] transition hover:bg-white"
           href={SITE.repositoryUrl}
         >
           {copy.secondaryCta}
@@ -162,15 +161,15 @@ const copy = content[locale];
         {copy.unsignedNote}
       </p>
     </div>
-    <div class="min-w-0 lg:justify-self-end">
+    <div class="hero-demo-wrap min-w-0 lg:justify-self-end">
       <InputVolumeDemo {...copy.demo} />
     </div>
   </div>
 </section>
 
-<section class="border-b border-[color:var(--line)] bg-white">
-  <div class="mx-auto max-w-6xl px-5 py-16">
-    <div class="max-w-3xl">
+<section class="device-section border-b border-[color:var(--line)]">
+  <div class="device-stage mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-[0.72fr_1.28fr]">
+    <div class="device-copy max-w-xl">
       <p class="text-sm font-semibold tracking-normal text-[color:var(--blue)]">{copy.device.kicker}</p>
       <h2 class="mt-3 text-3xl font-semibold leading-tight tracking-normal text-[color:var(--ink)] sm:text-4xl">
         {copy.device.title}
@@ -179,15 +178,20 @@ const copy = content[locale];
         {copy.device.body}
       </p>
     </div>
-    <div class="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="device-grid grid gap-4 sm:grid-cols-2">
       {
-        copy.device.outputs.map(([title, description, icon]) => (
-          <article class="feature-card group p-5 transition duration-200 hover:-translate-y-1 hover:shadow-[0_22px_42px_rgba(18,20,23,0.10)]">
-            <span class="grid h-14 w-14 place-items-center rounded-[8px] border border-[color:var(--line)] bg-white shadow-[0_8px_18px_rgba(18,20,23,0.06)]">
-              <img class="max-h-8 max-w-9" src={withBase(icon)} alt="" loading="lazy" decoding="async" />
+        copy.device.outputs.map(([title, description, icon, tag]) => (
+          <article class="device-card group transition duration-200 hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(18,20,23,0.12)]">
+            <span class="device-icon-wrap">
+              <img class="device-icon" src={withBase(icon)} alt="" loading="lazy" decoding="async" />
             </span>
-            <h3 class="mt-5 text-base font-semibold tracking-normal text-[color:var(--ink)]">{title}</h3>
-            <p class="mt-2 text-sm leading-6 text-[color:var(--muted)]">{description}</p>
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-2">
+                <h3 class="text-base font-semibold tracking-normal text-[color:var(--ink)]">{title}</h3>
+                <span class="device-tag">{tag}</span>
+              </div>
+              <p class="mt-2 text-sm leading-6 text-[color:var(--muted)]">{description}</p>
+            </div>
           </article>
         ))
       }
@@ -195,7 +199,7 @@ const copy = content[locale];
   </div>
 </section>
 
-<section class="mx-auto max-w-6xl px-5 py-16">
+<section class="story-section mx-auto max-w-6xl px-5 py-16">
   <div class="product-showcase">
     <div class="screenshot-stack" aria-label="Rolume settings window screenshots">
       <figure class="stacked-shot stacked-shot-general">
@@ -217,10 +221,10 @@ const copy = content[locale];
       <p class="mt-3 leading-7 text-[color:var(--muted)]">
         {copy.settings.beforeStrong}<strong class="font-semibold text-[color:var(--ink)]">{copy.settings.strong}</strong>{copy.settings.afterStrong}
       </p>
-      <div class="mt-7 grid gap-3 sm:grid-cols-2">
+      <div class="settings-points mt-7 grid gap-3">
         {
           copy.settings.points.map(([title, description]) => (
-            <div class="rounded-[8px] border border-[color:var(--line)] bg-white px-4 py-3">
+            <div class="settings-point">
               <p class="text-sm font-semibold text-[color:var(--ink)]">{title}</p>
               <p class="mt-1 text-sm leading-6 text-[color:var(--muted)]">{description}</p>
             </div>
@@ -244,7 +248,7 @@ const copy = content[locale];
   </div>
 </section>
 
-<section class="border-t border-[color:var(--line)] bg-white">
+<section class="download-section border-t border-[color:var(--line)]">
   <div class="mx-auto grid max-w-6xl gap-8 px-5 py-16 lg:grid-cols-[1fr_1fr]">
     <div>
       <p class="text-sm font-semibold tracking-normal text-[color:var(--blue)]">{copy.download.kicker}</p>
@@ -270,24 +274,277 @@ const copy = content[locale];
   </div>
 </section>
 
+<script is:inline>
+  (() => {
+    const scene = document.querySelector("[data-hero-scene]");
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!scene || !canHover || reduceMotion) return;
+
+    let pointerX = 70;
+    let pointerY = 42;
+    let raf = 0;
+
+    const render = () => {
+      raf = 0;
+      scene.style.setProperty("--hero-pointer-x", `${pointerX}%`);
+      scene.style.setProperty("--hero-pointer-y", `${pointerY}%`);
+    };
+
+    scene.addEventListener(
+      "pointermove",
+      (event) => {
+        const rect = scene.getBoundingClientRect();
+        pointerX = ((event.clientX - rect.left) / rect.width) * 100;
+        pointerY = ((event.clientY - rect.top) / rect.height) * 100;
+        if (!raf) raf = window.requestAnimationFrame(render);
+      },
+      { passive: true },
+    );
+  })();
+</script>
+
 <style>
+  .hero-scene {
+    --hero-pointer-x: 68%;
+    --hero-pointer-y: 42%;
+    position: relative;
+    isolation: isolate;
+    background:
+      radial-gradient(circle at 78% 22%, rgba(14, 165, 233, 0.18), transparent 30%),
+      radial-gradient(circle at 88% 72%, rgba(244, 114, 182, 0.16), transparent 26%),
+      radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.92), transparent 34%),
+      linear-gradient(180deg, rgba(245, 248, 252, 0.97), rgba(231, 237, 246, 0.92));
+  }
+
+  .hero-scene::before {
+    content: "";
+    position: absolute;
+    inset: 18px max(18px, calc((100vw - 1160px) / 2)) 28px;
+    z-index: 0;
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    border-radius: 30px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.2)),
+      rgba(255, 255, 255, 0.18);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.74),
+      0 48px 120px rgba(36, 48, 68, 0.14);
+    -webkit-backdrop-filter: blur(28px) saturate(1.2);
+    backdrop-filter: blur(28px) saturate(1.2);
+  }
+
+  .hero-scene::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 112px;
+    z-index: 0;
+    background:
+      linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.72)),
+      radial-gradient(ellipse at center, rgba(255, 255, 255, 0.56), transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-cursor-light {
+    position: absolute;
+    left: var(--hero-pointer-x);
+    top: var(--hero-pointer-y);
+    width: min(46vw, 520px);
+    aspect-ratio: 1;
+    z-index: 0;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.22) 35%, transparent 68%),
+      radial-gradient(circle, rgba(59, 130, 246, 0.18), transparent 68%);
+    filter: blur(10px);
+    opacity: 0.72;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: opacity 180ms ease;
+  }
+
+  .hero-desktop {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-copy {
+    padding-block: clamp(10px, 3vw, 34px);
+  }
+
+  .hero-badge,
+  .secondary-button {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.82),
+      0 12px 28px rgba(18, 20, 23, 0.05);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  .primary-button {
+    box-shadow:
+      0 16px 28px rgba(18, 20, 23, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  .hero-demo-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
+  .device-section {
+    position: relative;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.82), transparent 30%),
+      radial-gradient(circle at 88% 36%, rgba(148, 163, 184, 0.16), transparent 28%),
+      linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(239, 244, 250, 0.94));
+  }
+
+  .device-stage {
+    align-items: start;
+  }
+
+  .device-copy {
+    padding-top: 4px;
+  }
+
+  .device-grid {
+    position: relative;
+  }
+
+  .device-grid::before {
+    content: "";
+    position: absolute;
+    inset: -16px;
+    z-index: 0;
+    border-radius: 24px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(255, 255, 255, 0.12)),
+      rgba(218, 226, 238, 0.22);
+    -webkit-backdrop-filter: blur(18px) saturate(1.1);
+    backdrop-filter: blur(18px) saturate(1.1);
+  }
+
+  .device-card {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+    min-height: 142px;
+    border: 1px solid rgba(194, 204, 219, 0.82);
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.58)),
+      rgba(255, 255, 255, 0.62);
+    padding: 22px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.86),
+      0 14px 30px rgba(18, 20, 23, 0.06);
+    -webkit-backdrop-filter: blur(18px) saturate(1.18);
+    backdrop-filter: blur(18px) saturate(1.18);
+  }
+
+  .device-icon-wrap {
+    display: grid;
+    width: 58px;
+    height: 58px;
+    place-items: center;
+    border: 1px solid rgba(198, 208, 223, 0.88);
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(243, 247, 252, 0.82));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.92),
+      0 12px 22px rgba(18, 20, 23, 0.07);
+  }
+
+  .device-icon {
+    display: block;
+    max-width: 35px;
+    max-height: 34px;
+  }
+
+  .device-tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    border: 1px solid rgba(216, 222, 231, 0.9);
+    border-radius: 7px;
+    background: rgba(239, 243, 248, 0.74);
+    padding: 0 7px;
+    color: var(--muted);
+    font-size: 0.7rem;
+    font-weight: 760;
+    line-height: 1;
+  }
+
+  .story-section {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .story-section::before {
+    content: "";
+    position: absolute;
+    inset: 32px 5px auto;
+    height: 54%;
+    z-index: -1;
+    border-radius: 30px;
+    background:
+      radial-gradient(circle at 18% 36%, rgba(37, 99, 235, 0.09), transparent 28%),
+      radial-gradient(circle at 82% 42%, rgba(22, 131, 90, 0.08), transparent 30%);
+    pointer-events: none;
+  }
+
   .product-showcase {
     display: grid;
-    grid-template-columns: minmax(0, 0.96fr) minmax(320px, 1.04fr);
+    grid-template-columns: minmax(0, 0.98fr) minmax(320px, 1.02fr);
     align-items: center;
-    gap: clamp(40px, 7vw, 96px);
+    gap: clamp(42px, 7vw, 96px);
   }
 
   .screenshot-stack {
     position: relative;
-    min-height: clamp(360px, 42vw, 510px);
+    min-height: clamp(390px, 43vw, 540px);
     perspective: 900px;
+  }
+
+  .screenshot-stack::before {
+    content: "";
+    position: absolute;
+    inset: 8% 6% 10%;
+    border-radius: 30px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.18)),
+      rgba(225, 232, 242, 0.46);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      0 42px 74px rgba(26, 35, 48, 0.12);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+  }
+
+  .screenshot-stack::after {
+    content: "";
+    position: absolute;
+    right: 13%;
+    bottom: 2%;
+    left: 9%;
+    height: 70px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.16);
+    filter: blur(26px);
+    opacity: 0.48;
+    pointer-events: none;
   }
 
   .stacked-shot {
     position: absolute;
     margin: 0;
-    width: min(56%, 292px);
+    width: min(55%, 306px);
     transform-origin: center;
     transition: transform 180ms ease;
   }
@@ -297,8 +554,8 @@ const copy = content[locale];
     width: 100%;
     height: auto;
     filter:
-      drop-shadow(0 24px 36px rgba(18, 20, 23, 0.2))
-      drop-shadow(0 8px 14px rgba(18, 20, 23, 0.12));
+      drop-shadow(0 28px 38px rgba(18, 20, 23, 0.22))
+      drop-shadow(0 10px 16px rgba(18, 20, 23, 0.13));
     transition:
       filter 180ms ease,
       transform 180ms ease;
@@ -307,21 +564,21 @@ const copy = content[locale];
 
   .stacked-shot:hover img {
     filter:
-      drop-shadow(0 32px 44px rgba(18, 20, 23, 0.24))
-      drop-shadow(0 12px 18px rgba(18, 20, 23, 0.14));
+      drop-shadow(0 34px 46px rgba(18, 20, 23, 0.25))
+      drop-shadow(0 13px 19px rgba(18, 20, 23, 0.15));
     transform: translateY(-6px) scale(1.018);
   }
 
   .stacked-shot-general {
     top: 5%;
-    left: 10%;
+    left: 4%;
     z-index: 1;
     transform: rotate(-8deg) translateY(8px);
   }
 
   .stacked-shot-mouse {
-    right: 10%;
-    bottom: 5%;
+    right: 8%;
+    bottom: 3%;
     z-index: 2;
     transform: rotate(7deg) translateY(-2px);
   }
@@ -338,37 +595,134 @@ const copy = content[locale];
     max-width: 520px;
   }
 
+  .settings-points {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-point {
+    border: 1px solid rgba(204, 214, 228, 0.86);
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.56)),
+      rgba(255, 255, 255, 0.62);
+    padding: 14px 16px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.86),
+      0 12px 24px rgba(18, 20, 23, 0.05);
+  }
+
   .osd-showcase {
+    position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
     align-items: center;
     gap: clamp(30px, 6vw, 72px);
-    margin-top: clamp(56px, 8vw, 92px);
-    padding-top: clamp(42px, 6vw, 72px);
-    border-top: 1px solid var(--line);
+    margin-top: clamp(64px, 8vw, 102px);
+    overflow: hidden;
+    border: 1px solid rgba(205, 214, 228, 0.74);
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at 22% 22%, rgba(255, 255, 255, 0.72), transparent 34%),
+      radial-gradient(circle at 72% 76%, rgba(251, 146, 60, 0.11), transparent 32%),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.62), rgba(226, 233, 243, 0.44));
+    padding: clamp(28px, 5vw, 52px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.72),
+      0 28px 64px rgba(18, 20, 23, 0.08);
+  }
+
+  .osd-showcase::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(115deg, rgba(255, 255, 255, 0.42), transparent 38%),
+      linear-gradient(180deg, transparent, rgba(15, 23, 42, 0.035));
+    pointer-events: none;
+  }
+
+  .osd-showcase > * {
+    position: relative;
+    z-index: 1;
   }
 
   .osd-copy {
     max-width: 410px;
   }
 
+  .download-section {
+    background:
+      linear-gradient(180deg, rgba(248, 250, 252, 0.74), rgba(238, 243, 249, 0.9)),
+      var(--page);
+  }
+
+  @media (min-width: 901px) {
+    .hero-demo-wrap {
+      justify-content: flex-end;
+    }
+  }
+
   @media (max-width: 900px) {
+    .hero-scene::before {
+      inset: 12px 12px 18px;
+      border-radius: 24px;
+    }
+
     .product-showcase,
     .osd-showcase {
       grid-template-columns: 1fr;
     }
 
+    .device-grid::before {
+      inset: -10px;
+      border-radius: 18px;
+    }
+
     .screenshot-stack {
-      min-height: clamp(360px, 92vw, 560px);
+      min-height: clamp(380px, 92vw, 560px);
     }
 
     .stacked-shot {
-      width: min(66%, 300px);
+      width: min(66%, 306px);
     }
 
     .showcase-copy,
     .osd-copy {
       max-width: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-desktop {
+      min-height: auto;
+      padding-top: 42px;
+      padding-bottom: 42px;
+    }
+
+    .hero-copy {
+      padding-block: 0;
+    }
+
+    .device-card {
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 14px;
+      min-height: 0;
+      padding: 18px;
+    }
+
+    .device-icon-wrap {
+      width: 52px;
+      height: 52px;
+    }
+
+    .device-icon {
+      max-width: 31px;
+      max-height: 31px;
+    }
+
+    .osd-showcase {
+      border-radius: 18px;
+      padding: 22px 16px 26px;
     }
   }
 
@@ -393,10 +747,11 @@ const copy = content[locale];
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .stacked-shot img {
-      transition: none;
+    .hero-cursor-light {
+      display: none;
     }
 
+    .stacked-shot img,
     .stacked-shot {
       transition: none;
     }

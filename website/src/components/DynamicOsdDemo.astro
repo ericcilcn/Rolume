@@ -23,12 +23,17 @@ const withBase = (path: string) => `${base}${path.replace(/^\/+/, "")}`;
 
     demos.forEach((root) => {
       let volume = 0;
+      let raf = 0;
+      let lastRendered = -1;
+      let poller = 0;
       const label = root.querySelector("[data-osd-label]");
 
       const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
       const render = () => {
         const rounded = Math.round(volume);
+        if (rounded === lastRendered) return;
+        lastRendered = rounded;
         root.style.setProperty("--osd-volume", `${rounded}%`);
         if (label) label.textContent = String(rounded);
       };
@@ -41,8 +46,53 @@ const withBase = (path: string) => `${base}${path.replace(/^\/+/, "")}`;
         render();
       };
 
-      window.addEventListener("scroll", updateFromScroll, { passive: true });
-      window.addEventListener("resize", updateFromScroll, { passive: true });
+      const scheduleUpdate = () => {
+        if (raf) return;
+        raf = window.requestAnimationFrame(() => {
+          raf = 0;
+          updateFromScroll();
+        });
+      };
+
+      const startPolling = () => {
+        if (poller || document.hidden) return;
+        poller = window.setInterval(scheduleUpdate, 120);
+      };
+
+      const stopPolling = () => {
+        if (!poller) return;
+        window.clearInterval(poller);
+        poller = 0;
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const active = entries.some((entry) => entry.isIntersecting);
+          if (active) {
+            scheduleUpdate();
+            startPolling();
+          } else {
+            scheduleUpdate();
+            stopPolling();
+          }
+        },
+        { rootMargin: "100% 0px 40% 0px", threshold: 0 },
+      );
+
+      observer.observe(root);
+
+      window.addEventListener("scroll", scheduleUpdate, { passive: true });
+      window.addEventListener("wheel", scheduleUpdate, { passive: true });
+      window.addEventListener("touchmove", scheduleUpdate, { passive: true });
+      window.addEventListener("resize", scheduleUpdate, { passive: true });
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          stopPolling();
+        } else {
+          scheduleUpdate();
+          startPolling();
+        }
+      });
 
       updateFromScroll();
     });
