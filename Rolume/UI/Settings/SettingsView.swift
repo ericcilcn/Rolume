@@ -339,7 +339,7 @@ struct SettingsView: View {
     func restoreDefaults() {
         mouseVolumeStep = .medium; mouseScrollInDock = true; mouseScrollInMenuBar = false
         mouseScrollWithModifier = false; mouseDisableSystemScroll = false
-        trackpadVolumeStep = .medium; trackpadScrollInDock = true; trackpadScrollInMenuBar = false
+        trackpadVolumeStep = .medium; trackpadScrollInDock = false; trackpadScrollInMenuBar = true
         trackpadScrollWithModifier = false; trackpadDisableSystemScroll = false
         mouseModifierKey = .option; trackpadModifierKey = .option
         showOSD = true; doubleClickToMute = true

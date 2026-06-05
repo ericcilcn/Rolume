@@ -197,7 +197,7 @@ class DisplayManager: ObservableObject {
     var trackpadScrollInDock: Bool {
         get {
             if UserDefaults.standard.object(forKey: "trackpadScrollInDock") == nil {
-                return true  // 默认开启
+                return false  // 默认关闭，避免全屏内容滚动时误触 Dock 区域调音量
             }
             return UserDefaults.standard.bool(forKey: "trackpadScrollInDock")
         }
@@ -210,7 +210,7 @@ class DisplayManager: ObservableObject {
     var trackpadScrollInMenuBar: Bool {
         get {
             if UserDefaults.standard.object(forKey: "trackpadScrollInMenuBar") == nil {
-                return false  // 默认关闭
+                return true  // 默认开启，触控板默认只在顶部菜单栏区域调音量
             }
             return UserDefaults.standard.bool(forKey: "trackpadScrollInMenuBar")
         }
@@ -502,7 +502,15 @@ class DisplayManager: ObservableObject {
             return
         }
 
-        let syncedActive = active.isExternal ? syncExternalVolumeIfNeeded(for: active) : active
+        let storedActive = displays.first(where: { $0.id == active.id }) ?? active
+        if storedActive.isMuted {
+            #if DEBUG
+            print("🔇 Ignoring volume adjustment while muted: \(storedActive.name)")
+            #endif
+            return
+        }
+
+        let syncedActive = storedActive.isExternal ? syncExternalVolumeIfNeeded(for: storedActive) : storedActive
         let newVolume = max(0, min(syncedActive.maxVolume, syncedActive.currentVolume + delta))
         guard newVolume != syncedActive.currentVolume else { return }
 
@@ -606,6 +614,22 @@ class DisplayManager: ObservableObject {
         UserDefaults.standard.set(volume, forKey: key)
     }
 
+    private func saveVolumeBeforeMute(_ volume: Int, for displayID: CGDirectDisplayID) {
+        let key = "volumeBeforeMute_\(displayID)"
+        UserDefaults.standard.set(volume, forKey: key)
+    }
+
+    private func loadVolumeBeforeMute(for displayID: CGDirectDisplayID) -> Int? {
+        let key = "volumeBeforeMute_\(displayID)"
+        guard let value = UserDefaults.standard.object(forKey: key) as? NSNumber else { return nil }
+        return value.intValue
+    }
+
+    private func clearVolumeBeforeMute(for displayID: CGDirectDisplayID) {
+        let key = "volumeBeforeMute_\(displayID)"
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+
     private func loadSavedVolume(for displayID: CGDirectDisplayID) -> Int? {
         let key = "volume_\(displayID)"
         let volume = UserDefaults.standard.integer(forKey: key)
@@ -615,15 +639,18 @@ class DisplayManager: ObservableObject {
     func toggleMute() {
         guard let active = activeDisplay else { return }
         guard let index = displays.firstIndex(where: { $0.id == active.id }) else { return }
+        let current = displays[index]
 
-        if active.isMuted {
+        if current.isMuted {
             // 取消静音：恢复之前的音量
-            let restoreVolume = active.volumeBeforeMute > 0 ? active.volumeBeforeMute : 50
+            let storedVolume = loadVolumeBeforeMute(for: current.id)
+            let fallbackVolume = current.volumeBeforeMute > 0 ? current.volumeBeforeMute : (loadSavedVolume(for: current.id) ?? 0)
+            let restoreVolume = max(0, min(current.maxVolume, storedVolume ?? fallbackVolume))
 
             var success = false
-            if active.isExternal {
-                let ddcValue = ddcValue(forPercent: restoreVolume, display: active)
-                success = DDCManager.shared.setVolume(ddcValue, for: active.id)
+            if current.isExternal {
+                let ddcValue = ddcValue(forPercent: restoreVolume, display: current)
+                success = DDCManager.shared.setVolume(ddcValue, for: current.id)
             } else {
                 success = SystemAudioManager.shared.setVolume(Float(restoreVolume) / 100.0)
             }
@@ -634,15 +661,19 @@ class DisplayManager: ObservableObject {
                 displays[index].isDDCAvailable = active.isExternal ? true : displays[index].isDDCAvailable
                 displays[index].isMuted = false
                 activeDisplay = displays[index]
+                saveVolume(restoreVolume, for: current.id)
+                clearVolumeBeforeMute(for: current.id)
+                markDDCVolumeSynced(for: current.id)
                 NotificationCenter.default.post(name: NSNotification.Name("DisplayChanged"), object: nil)
             }
         } else {
             // 静音：保存当前音量，然后设为 0
-            displays[index].volumeBeforeMute = active.currentVolume
+            displays[index].volumeBeforeMute = current.currentVolume
+            saveVolumeBeforeMute(current.currentVolume, for: current.id)
 
             var success = false
-            if active.isExternal {
-                success = DDCManager.shared.setVolume(0, for: active.id)
+            if current.isExternal {
+                success = DDCManager.shared.setVolume(0, for: current.id)
             } else {
                 success = SystemAudioManager.shared.setVolume(0.0)
             }
@@ -653,6 +684,7 @@ class DisplayManager: ObservableObject {
                 displays[index].isDDCAvailable = active.isExternal ? true : displays[index].isDDCAvailable
                 displays[index].isMuted = true
                 activeDisplay = displays[index]
+                markDDCVolumeSynced(for: current.id)
                 NotificationCenter.default.post(name: NSNotification.Name("DisplayChanged"), object: nil)
             }
         }

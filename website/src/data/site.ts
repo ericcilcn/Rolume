@@ -9,7 +9,7 @@ export const SITE = {
   issueUrl: "https://github.com/ericcilcn/Rolume/issues",
   email: "Ericcil@163.com",
   version: "1.1",
-  sha256: "371257a69d585e51b78d425961d14f6df6545fc6954b23cddaf398e2bd62aa63",
+  sha256: "b2f1baf19138105db9237b75bd74dc8a3814e97a9de6780df721a9994aa7e621",
 };
 
 export const FEATURES = [
@@ -22,7 +22,7 @@ export const FEATURES = [
   {
     title: "滚轮与触控板控制",
     description:
-      "在 Dock、菜单栏或按住修饰键时滚动调节音量，鼠标和触控板独立设置。",
+      "鼠标和触控板独立设置；触控板默认只在顶部菜单栏区域生效，减少误触。",
     accent: "green",
   },
   {
@@ -42,7 +42,7 @@ export const FEATURES = [
 export const HIGHLIGHTS = [
   {
     title: "滚动调音量",
-    description: "在菜单栏、Dock 区域，或按住修饰键时滚动调节。",
+    description: "鼠标可在 Dock 或菜单栏滚动；触控板默认在顶部菜单栏滑动。",
     accent: "blue",
   },
   {

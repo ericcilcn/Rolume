@@ -14,7 +14,7 @@ Small public beta release.
 ### Download
 
 - [Rolume.dmg](https://github.com/ericcilcn/Rolume/releases/download/1.1/Rolume.dmg)
-- SHA-256: `371257a69d585e51b78d425961d14f6df6545fc6954b23cddaf398e2bd62aa63`
+- SHA-256: `b2f1baf19138105db9237b75bd74dc8a3814e97a9de6780df721a9994aa7e621`
 
 ### Highlights
 
@@ -22,6 +22,8 @@ Small public beta release.
 - Refactored external display DDC/CI volume control
 - Split mouse and trackpad volume settings
 - Added separate step size and modifier-key options for mouse and trackpad
+- Volume changes no longer unmute automatically
+- Changed trackpad defaults to use the top menu bar area and reduce Dock-area accidents
 - Improved the Accessibility permission request flow
 - Adjusted OSD position, size, corner radius, and device-name layout
 - Rebuilt the DMG package and added SHA-256 verification
